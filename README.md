@@ -2,12 +2,16 @@
 Projet Symfony pour les étudiants du cours décalé
 
 Cloner le projet : 
-$ git clone https://github.com/changuelsami/symfony-cd-epi.git
+
+    $ git clone https://github.com/changuelsami/symfony-cd-epi.git
 
 Changer de dossier : 
-$ cd symfony-cd-epi
+
+    $ cd symfony-cd-epi
 
 Installer les bundles (vendors) - Attention vous devez installer composer ou au moins copier composer.phar dans le dossier courant
-$ composer install
+
+    $ composer install
 ou
-$ php composer.phar install
+
+    $ php composer.phar install
