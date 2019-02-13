@@ -9,6 +9,8 @@ use App\Entity\Produit;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class FrontController extends Controller
 {
     /**
@@ -51,9 +53,35 @@ class FrontController extends Controller
      * @Route("/panier/details", name="panier_details")
      */
     public function panierDetails() {
-        
+        // Récuprer la liste des produits (objets) ajoutés au panier
+        $sess = new Session();
+        $panier = $sess->get('panier');
 
-        return $this->render('front/panier.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Produit::class);
+        
+        $liste = $repo->findById( array_keys($panier) );
+
+        return $this->render('front/panier.html.twig', 
+                            ['produits' => $liste, 'panier' => $panier]);
+    }
+
+    /**
+     * @Route("/panier/supp/{id}", name="panier_supp")
+     */
+    public function panierSupp($id) {
+        $sess = new Session();
+        $panier = $sess->get('panier');
+        unset( $panier[$id] );
+        $sess->set('panier', $panier);
+        return $this->redirectToRoute('panier_details');
+    }
+
+    public function panierContenu(){
+        $sess = new Session();
+        $panier = $sess->get('panier');
+        $n = count($panier);
+        return new Response($n);
     }
 
 }

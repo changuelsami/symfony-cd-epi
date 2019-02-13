@@ -25,57 +25,36 @@
 						</tr>
 					</thead>
 					<tbody>
+						{% set total_ht = 0 %}
+                        {% for p in produits %}
+                            {% set total_ht = total_ht + p.prix * panier[p.id] %}
 						<tr>
 							<td class="cart_product">
-								<a href="produits.html?categorie=1"><img src="images/cart/one.png" alt=""></a>
+								<a href="produits.html?categorie=2"><img src="{{p.image}}" alt="" width="100px"></a>
 							</td>
 							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>ID: 1089772</p>
+								<h4><a href="">{{p.libelle}}</a></h4>
+								<p>Web ID: {{p.id}}</p>
 							</td>
 							<td class="cart_price">
-								<p>59</p>
+								<p>{{p.prix}}</p>
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
 
-									<input id="qte_1" class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2" disabled="">
+									<input class="cart_quantity_input" type="text" name="quantity" value="{{panier[p.id]}}" autocomplete="off" size="2" disabled="">
 
 								</div>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">40</p>
+								<p class="cart_total_price">{{ (p.prix * panier[p.id]) | number_format(3, '.', ',') }}</p>
 							</td>
 							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								<a class="cart_quantity_delete" href="{{ path('panier_supp', {'id' : p.id}) }}"><i class="fa fa-times"></i></a>
 							</td>
 						</tr>
-
-						<tr>
-							<td class="cart_product">
-								<a href="produits.html?categorie=2"><img src="images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2" disabled="">
-
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">60</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+                        
+                        {% endfor %}
 
 					</tbody>
 				</table>
@@ -84,4 +63,28 @@
 
 		</div>
 	</section> <!--/#cart_items-->
+
+    <section id="do_action">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4">
+
+				</div>
+				<div class="col-sm-8">
+					<div class="total_area">
+						<ul>
+							<li>Sous total <span> {{total_ht | number_format(3, '.', ',')}} </span></li>
+							<li>TVA (10%) <span>{{ (total_ht * 0.1) | number_format(3, '.', ',') }}</span></li>
+							<li>Frais de transport <span>Gratuit</span></li>
+							<li>Total <span>{{ (total_ht * 1.1) | number_format(3, '.', ',') }}</span></li>
+						</ul>
+						<a class="btn btn-default update" href="#">Vider le panier</a> 
+
+						<a class="btn btn-default check_out pull-right" href="{{path('commande_index')}}">Valider ma commande</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section><!--/#do_action-->
+
 {% endblock %}
